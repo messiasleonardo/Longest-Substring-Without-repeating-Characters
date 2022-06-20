@@ -3,33 +3,39 @@ public class Solution
 {
     public int LengthOfLongestSubstring(string s)
     {
-        string text = "";
-        char[] characters = s.ToCharArray();
-        int count = 0;
-        int result = 0;
 
-        for (int i = 0; i < characters.Length; i++)
+        int n = s.Length;
+
+        int res = 0;
+        for (int i = 0; i < n; i++)
         {
-            if (!text.Contains(characters[i]))
+            for (int j = i; j < n; j++)
             {
-                text += characters[i];
-            }
-            else
-            {
-                count = text.Length;
-                if (count > result)
+                if (CheckDictionary(s, i, j))
                 {
-
-                    result = count;
+                    res = Math.Max(res, j - i + 1);
                 }
-
-                text = "";
-                text += characters[i];
             }
-
-
         }
-
-        return result;
+        return res;
     }
+
+
+    private bool CheckDictionary(string s, int start, int end)
+    {
+        Dictionary<int, char> chars = new Dictionary<int, char>();
+
+        for (int i = start; i <= end; i++)
+        {
+            char c = s[i];
+            chars.Add(i, c);
+            if (chars.Where(x => x.Value == c).ToList().Count > 1)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 }
